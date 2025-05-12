@@ -39,13 +39,15 @@ void espReset();
 /**
  * @brief Checks at boot whether a reset button is being held and performs a factory reset if so.
  *
- * @param pin     GPIO pin connected to the reset button. Must be configured as INPUT_PULLUP.
- * @param ledPin  Optional GPIO pin connected to a status LED (default = 255 = no LED).
+ * @param pin     GPIO pin connected to the reset button. Must use INPUT_PULLUP mode.
+ * @param ledPin  GPIO pin for LED feedback. Use 255 to disable LED blinking.
+ * @param format  If true, formats the entire filesystem. If false (default), only selected files are deleted.
  *
- * If the button is held longer than FACTORY_RESET_TIME (default 5000 ms), a factory reset is triggered.
- * The LED (if present) blinks 20 times before the reset for user feedback.
+ * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), a factory reset is triggered.
+ * The LED (if enabled) will blink 20 times before the reset.
+ * The reset behavior is controlled by the format parameter.
  */
-void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin = 255);
+void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format = false);
 
 // --- Implementations ---
 inline void espReset() {
@@ -95,7 +97,7 @@ inline void factoryReset(bool format) {
 #endif
 }
 
-inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin) {
+inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format = false) {
   pinMode(pin, INPUT_PULLUP);
   unsigned long startTime = millis();
   DPRINTF(0, "[Startup] Checking reset button state...\n");
@@ -106,7 +108,7 @@ inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin) {
       if (ledPin != 255) {
         blinkLed(20, 100);
       }
-      factoryReset();
+      factoryReset(format);
     }
     delay(10);
   }
