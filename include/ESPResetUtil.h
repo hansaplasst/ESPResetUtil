@@ -97,7 +97,7 @@ inline void factoryReset(bool format) {
 #endif
 }
 
-inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format = false) {
+inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format) {
   pinMode(pin, INPUT_PULLUP);
   unsigned long startTime = millis();
   DPRINTF(0, "[Startup] Checking reset button state...\n");
