@@ -8,7 +8,6 @@
   #include "soc/soc.h"
 #endif
 
-#include "LEDBlinkUtil.h"
 #include "ESPResetUtil.h"
 
 // --- Project settings ---
@@ -47,8 +46,7 @@ void setup() {
 void loop() {
   if (digitalRead(RESET_PIN) == LOW) {
     DPRINTF(2, "[Loop] Reset button pressed during runtime\n");
-    blinkLed(4, 100);
-    ESP.restart();
+    espReset();
   }
 
   delay(10);
