@@ -52,12 +52,12 @@ void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format = false)
 // --- Implementations ---
 inline void espReset() {
   DPRINTF(2, "[ESPReset] Restarting ESP...\n");
+  blinkLed(4, 100);
 #ifdef ARDUINO_ARCH_ESP8266
   ESP.reset();
 #else
   ESP.restart();
 #endif
-  blinkLed(4, 100);
 }
 
 inline void factoryReset(bool format) {

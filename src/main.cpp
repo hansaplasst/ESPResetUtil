@@ -11,8 +11,12 @@
 #include "ESPResetUtil.h"
 
 // --- Project settings ---
-#define RESET_PIN 4
-#define LEDPIN 2
+#ifndef RESET_PIN
+  #define RESET_PIN 4
+#endif
+#ifndef LEDPIN
+  #define LEDPIN 2
+#endif
 
 void setup() {
   delay(1000);
