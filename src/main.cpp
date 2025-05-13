@@ -20,10 +20,10 @@
 
 void setup() {
   delay(1000);
-  Serial.begin(BAUDRATE);
+  Serial.begin(BAUDRATE);  // Todo: Include a Config.h for configurable settings
 
-  pinMode(LEDPIN, OUTPUT);
-  pinMode(RESET_PIN, INPUT_PULLUP);
+  pinMode(LEDPIN, OUTPUT);           // Todo: Include a Config.h for configurable settings
+  pinMode(RESET_PIN, INPUT_PULLUP);  // Todo: Include a Config.h for configurable settings
 
 #ifdef ARDUINO_ARCH_ESP32
   if (!LittleFS.begin(false)) {
