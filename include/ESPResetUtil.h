@@ -73,9 +73,9 @@ inline void factoryReset(bool format) {
     DPRINTF(2, "[FactoryReset] Deleting selected files...\n");
 
     const char* filesToDelete[] = {
+        // TODO: Make this configurable via a config file
         "/config.json",
         "/user.txt",
-        // Add more paths as needed
     };
 
     for (const char* path : filesToDelete) {
