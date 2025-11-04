@@ -51,7 +51,7 @@ void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format = false)
 
 // --- Implementations ---
 inline void espReset() {
-  DPRINTF(2, "[ESPReset] Restarting ESP...\n");
+  DPRINTF(2, "[ESPReset] Restarting ESP...");
   blinkLed(4, 100);
 #ifdef ARDUINO_ARCH_ESP8266
   ESP.reset();
@@ -62,7 +62,7 @@ inline void espReset() {
 
 inline void factoryReset(bool format) {
   if (format) {
-    DPRINTF(2, "[FactoryReset] Formatting filesystem (%s)...\n",
+    DPRINTF(2, "[FactoryReset] Formatting filesystem (%s)...",
 #ifdef ARDUINO_ARCH_ESP32
             "LittleFS");
 #else
@@ -70,7 +70,7 @@ inline void factoryReset(bool format) {
 #endif
     FILESYSTEM.format();
   } else {
-    DPRINTF(2, "[FactoryReset] Deleting selected files...\n");
+    DPRINTF(2, "[FactoryReset] Deleting selected files...");
 
     const char* filesToDelete[] = {
         // TODO: Make this configurable via a config file
@@ -80,10 +80,10 @@ inline void factoryReset(bool format) {
 
     for (const char* path : filesToDelete) {
       if (FILESYSTEM.exists(path)) {
-        DPRINTF(1, "[FactoryReset] Removing %s\n", path);
+        DPRINTF(1, "[FactoryReset] Removing %s", path);
         FILESYSTEM.remove(path);
       } else {
-        DPRINTF(0, "[FactoryReset] File not found: %s\n", path);
+        DPRINTF(0, "[FactoryReset] File not found: %s", path);
       }
     }
   }
@@ -100,11 +100,11 @@ inline void factoryReset(bool format) {
 inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format) {
   pinMode(pin, INPUT_PULLUP);
   unsigned long startTime = millis();
-  DPRINTF(0, "[Startup] Checking reset button state...\n");
+  DPRINTF(0, "[Startup] Checking reset button state...");
 
   while (digitalRead(pin) == LOW) {
     if (millis() - startTime > FACTORY_RESET_TIME) {
-      DPRINTF(2, "[Startup] Button held >5s -> Factory reset triggered.\n");
+      DPRINTF(2, "[Startup] Button held >5s -> Factory reset triggered.");
       if (ledPin != 255) {
         blinkLed(20, 100);
       }

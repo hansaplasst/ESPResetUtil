@@ -30,7 +30,7 @@ void setup() {
 #elif defined(ARDUINO_ARCH_ESP8266)
   if (!LittleFS.begin()) {
 #endif
-    DPRINTF(3, "[LittleFS] Initialization failed! Formatting...\n");
+    DPRINTF(3, "[LittleFS] Initialization failed! Formatting...");
     factoryReset();
   }
 
@@ -40,7 +40,7 @@ void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);  // Disable brownout detector
 #endif
 
-  DPRINTF(1, "[Setup] WiFi/Bluetooth initialization would go here...\n");
+  DPRINTF(1, "[Setup] WiFi/Bluetooth initialization would go here...");
 
 #ifdef BROWNOUT_HACK
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 1);  // Re-enable brownout detector
@@ -49,7 +49,7 @@ void setup() {
 
 void loop() {
   if (digitalRead(RESET_PIN) == LOW) {
-    DPRINTF(2, "[Loop] Reset button pressed during runtime\n");
+    DPRINTF(2, "[Loop] Reset button pressed during runtime");
     espReset();
   }
 
