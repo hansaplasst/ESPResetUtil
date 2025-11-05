@@ -4,12 +4,12 @@
 #include <Arduino.h>
 
 #ifndef LEDPIN
-#define LEDPIN 2  // Default built-in LED pin (e.g. GPIO2 on Wemos D1 Mini ESP32)
+  #define LEDPIN 2  // Default built-in LED pin (e.g. GPIO2 on Wemos D1 Mini ESP32)
 #endif
 
 /**
  * @brief Blink the default LED defined by LEDPIN.
- * 
+ *
  * @param count     Number of times to blink (default = 1)
  * @param msDelay   Duration of a full blink in milliseconds (default = 1000)
  */
@@ -17,7 +17,7 @@ void blinkLed(int16_t count = 1, int16_t msDelay = 1000);
 
 /**
  * @brief Blink a custom LED on a specified GPIO pin.
- * 
+ *
  * @param pin       GPIO pin number to blink
  * @param count     Number of times to blink (default = 1)
  * @param msDelay   Duration of a full blink in milliseconds (default = 1000)

@@ -50,9 +50,9 @@ void espReset();
 void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format = false);
 
 // --- Implementations ---
-inline void espReset() {
+inline void espReset(uint8_t LedPin = LEDPIN) {
   DPRINTF(2, "[ESPReset] Restarting ESP...");
-  blinkLed(4, 100);
+  blinkLedOnPin(LedPin, 4, 100);
 #ifdef ARDUINO_ARCH_ESP8266
   ESP.reset();
 #else
@@ -106,7 +106,7 @@ inline void checkResetButtonOnStartup(uint8_t pin, uint8_t ledPin, bool format) 
     if (millis() - startTime > FACTORY_RESET_TIME) {
       DPRINTF(2, "[Startup] Button held >5s -> Factory reset triggered.");
       if (ledPin != 255) {
-        blinkLed(20, 100);
+        blinkLedOnPin(ledPin, 20, 100);
       }
       factoryReset(format);
     }
