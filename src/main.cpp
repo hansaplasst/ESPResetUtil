@@ -45,7 +45,7 @@ void setup() {
 #ifdef BROWNOUT_HACK
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 1);  // Re-enable brownout detector
 #endif
-  blinkLed(4, 100);
+  blinkLed(2, 1000);  // Indicate setup completion
 }
 
 void loop() {
