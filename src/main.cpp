@@ -51,7 +51,7 @@ void setup() {
 void loop() {
   if (digitalRead(RESET_PIN) == LOW) {
     DPRINTF(2, "[Loop] Reset button pressed during runtime");
-    espReset();
+    espReset(LEDPIN);
   }
 
   delay(10);
