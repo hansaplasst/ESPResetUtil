@@ -34,7 +34,9 @@ void factoryReset(bool format = false);
  * This is a soft reset for ESP32 (`ESP.restart()`) or a hard reset for ESP8266 (`ESP.reset()`).
  * Before resetting, the LED blinks 4 times for visual confirmation.
  */
-void espReset();
+inline void espReset() {
+  espReset(LEDPIN);
+}
 
 /**
  * @brief Checks at boot whether a reset button is being held and performs a factory reset if so.
