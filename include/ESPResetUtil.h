@@ -29,16 +29,6 @@
 void factoryReset(bool format = false);
 
 /**
- * @brief Performs a clean ESP restart and provides visual feedback.
- *
- * This is a soft reset for ESP32 (`ESP.restart()`) or a hard reset for ESP8266 (`ESP.reset()`).
- * Before resetting, the LED blinks 4 times for visual confirmation.
- */
-inline void espReset() {
-  espReset(2);  // Default LED pin 2
-}
-
-/**
  * @brief Checks at boot whether a reset button is being held and performs a factory reset if so.
  *
  * @param pin     GPIO pin connected to the reset button. Must use INPUT_PULLUP mode.
@@ -60,6 +50,16 @@ inline void espReset(uint8_t LedPin) {
 #else
   ESP.restart();
 #endif
+}
+
+/**
+ * @brief Performs a clean ESP restart and provides visual feedback.
+ *
+ * This is a soft reset for ESP32 (`ESP.restart()`) or a hard reset for ESP8266 (`ESP.reset()`).
+ * Before resetting, the LED blinks 4 times for visual confirmation.
+ */
+inline void espReset() {
+  espReset(2);  // Default LED pin 2
 }
 
 inline void factoryReset(bool format) {
