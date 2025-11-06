@@ -35,7 +35,7 @@ void factoryReset(bool format = false);
  * Before resetting, the LED blinks 4 times for visual confirmation.
  */
 inline void espReset() {
-  espReset(LEDPIN);
+  espReset(2);  // Default LED pin 2
 }
 
 /**
