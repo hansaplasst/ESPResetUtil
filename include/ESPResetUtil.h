@@ -19,7 +19,7 @@
   #define FACTORY_RESET_TIME 5000  // 5 seconds button press = factory reset
 #endif
 
-const char* FACTORY_RESET_MARKER = "/.factory_reset_marker";
+extern const char* FACTORY_RESET_MARKER = "/.factory_reset_marker";
 
 /**
  * @brief Resets the device by deleting specific files or formatting the entire filesystem.
