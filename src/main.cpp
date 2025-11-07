@@ -34,13 +34,16 @@ void setup() {
     factoryReset();
   }
 
+  if (checkFactoryResetMarker()) {
+    DPRINTF(1, "[Setup] Factory reset marker was found...");
+  }
   checkResetButtonOnStartup(RESET_PIN, LEDPIN);
 
 #ifdef BROWNOUT_HACK
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);  // Disable brownout detector
 #endif
 
-  DPRINTF(1, "[Setup] WiFi/Bluetooth initialization would go here...");
+  DPRINTF(1, "[Setup] Initialization would go here...");
 
 #ifdef BROWNOUT_HACK
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 1);  // Re-enable brownout detector

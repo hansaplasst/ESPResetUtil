@@ -106,7 +106,7 @@ inline void factoryReset(bool format) {
   };
 
   for (const char* f : filesToCreate) {
-    DPRINTF(1, "[FactoryReset] Creating %s", f);
+    DPRINTF(0, "[FactoryReset] Creating %s", f);
     File file = FILESYSTEM.open(f, FILE_WRITE);
     if (file) {
       file.close();
@@ -130,13 +130,11 @@ inline void factoryReset(bool format) {
  *
  * If the marker file is found, it is deleted to prevent repeated resets on subsequent boots.
  */
-inline bool factoryResetMarkerFileExists() {
-  DPRINTF(0, "[FactoryReset] Checking for factory reset marker file...");
+inline bool checkFactoryResetMarker() {
+  DPRINTF(0, "[checkFactoryResetMarker] Checking for factory reset marker file...");
   if (FILESYSTEM.exists(FACTORY_RESET_MARKER_FILE)) {
     if (FILESYSTEM.remove(FACTORY_RESET_MARKER_FILE))
-      DPRINTF(0, "[FactoryReset] Factory reset marker file removed.");
-
-    DPRINTF(1, "[FactoryReset] Factory reset marker exists: '%s'", FACTORY_RESET_MARKER_FILE);
+      DPRINTF(0, "[checkFactoryResetMarker] Factory reset marker file exists and was removed.");
     return true;
   }
   return false;
