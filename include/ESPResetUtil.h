@@ -19,7 +19,7 @@
   #define FACTORY_RESET_TIME 5000  // 5 seconds button press = factory reset
 #endif
 
-const char* FACTORY_RESET_MARKER_FILE = "/.factory_reset_marker";
+const char* FACTORY_RESET_MARKER = "/.factory_reset_marker";
 
 /**
  * @brief Resets the device by deleting specific files or formatting the entire filesystem.
@@ -102,7 +102,7 @@ inline void factoryReset(bool format) {
 
   const char* filesToCreate[] = {
       // Files to recreate after deletion to avoid boot issues
-      FACTORY_RESET_MARKER_FILE,
+      FACTORY_RESET_MARKER,
   };
 
   for (const char* f : filesToCreate) {
@@ -132,8 +132,8 @@ inline void factoryReset(bool format) {
  */
 inline bool checkFactoryResetMarker() {
   DPRINTF(0, "[checkFactoryResetMarker] Checking for factory reset marker file...");
-  if (FILESYSTEM.exists(FACTORY_RESET_MARKER_FILE)) {
-    if (FILESYSTEM.remove(FACTORY_RESET_MARKER_FILE))
+  if (FILESYSTEM.exists(FACTORY_RESET_MARKER)) {
+    if (FILESYSTEM.remove(FACTORY_RESET_MARKER))
       DPRINTF(0, "[checkFactoryResetMarker] Factory reset marker file exists and was removed.");
     return true;
   }
