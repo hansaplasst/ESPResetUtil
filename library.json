@@ -1,4 +1,13 @@
 {
-  "name": "ESPResetUtil",
-  "version": "0.0.0+20250513015445"
+  "name": "ESP8266/ESP32 Reset and Factory default library",
+  "version": "1.0.0",
+  "author": "Hansaplast",
+  "license": "GPL-3.0",
+  "keywords": ["esp8266", "esp32", "reset", "utility"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hansaplasst/ESPResetUtil.git"
+  },
+  "frameworks": ["arduino"],
+  "platforms": ["espressif32"]
 }
