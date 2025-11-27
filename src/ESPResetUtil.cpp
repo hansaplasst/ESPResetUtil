@@ -87,17 +87,16 @@ bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const char* filename) {
   return false;
 }
 
-/*
- * @brief Checks whether a reset button is being held longer than FACTORY_RESET_TIME and performs a factory reset if so.
+/**
+ * @brief Returns true if reset button is being held longer than FACTORY_RESET_TIME
  *
  * @param gpioPin    GPIO pin connected to the reset button. Must use INPUT_PULLUP mode.
  * @param ledPin     GPIO pin for LED feedback. Use 255 to disable LED blinking.
- * @param format     If true, formats the entire filesystem. If false (default), only selected files are deleted.
- * @param fileSystem File system to act upon
  *
- * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), a factory reset is triggered.
- * The LED (if enabled) will blink 20 times before the reset.
- * The reset behavior is controlled by the format parameter.
+ * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), the LED
+ * (if enabled) will blink 20 times before the reset.
+ *
+ * @return true if the button is held longer than FACTORY_RESET_TIME (default 5000 ms)
  */
 bool factoryResetRequest(uint8_t gpioPin, uint8_t ledPin) {
   DPRINTF(0, "[factoryResetRequest]");

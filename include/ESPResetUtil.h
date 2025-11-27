@@ -51,8 +51,8 @@ bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem = LittleFS, const char* 
  * @param gpioPin    GPIO pin connected to the reset button. Must use INPUT_PULLUP mode.
  * @param ledPin     GPIO pin for LED feedback. Use 255 to disable LED blinking.
  *
- * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), a factory reset is triggered.
- * The LED (if enabled) will blink 20 times before the reset.
+ * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), the LED
+ * (if enabled) will blink 20 times before the reset.
  *
  * @return true if the button is held longer than FACTORY_RESET_TIME (default 5000 ms)
  */
