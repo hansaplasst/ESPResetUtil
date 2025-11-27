@@ -34,7 +34,7 @@ void espReset(uint8_t LedPin = 2);
  *
  * After performing the reset actions, the device restarts.
  */
-void factoryReset(bool format = false, fs::LittleFSFS& fileSystem = LittleFS);  // TODO: Add SPIFFS variant
+void factoryReset(bool format = false, fs::LittleFSFS& fileSystem = LittleFS, std::initializer_list<const char*> filesToDelete = {});  // TODO: Add SPIFFS variant
 
 /**
  * @brief Checks if the factory reset marker file exists.

@@ -24,28 +24,25 @@ void espReset(uint8_t LedPin) {
  *
  * After performing the reset actions, the device restarts.
  */
-void factoryReset(bool format, fs::LittleFSFS& fileSystem) {
+void factoryReset(bool format, fs::LittleFSFS& fileSystem, std::initializer_list<const char*> filesToDelete) {
   DPRINTF(0, "[factoryReset]");
-  if (format) {
-    DPRINTF(1, "[FactoryReset] Formatting filesystem (LittleFS)...");
-    fileSystem.format();
+
+  // 1. Delete files
+  for (const char* filename : filesToDelete) {
+    if (fileSystem.exists(filename)) {
+      if (fileSystem.remove(filename)) {
+        DPRINTF(1, " Deleted file: %s", filename);
+      } else {
+        DPRINTF(3, " Failed to delete file: %s", filename);
+      }
+    } else {
+      DPRINTF(1, " File not found (skip): %s", filename);
+    }
   }
 
-  DPRINTF(0, "[FactoryReset] Deleting selected files...");
-
-  const char* filesToDelete[] = {
-      // TODO: Make this configurable via function
-      "/config.json",
-      "/user.txt",
-  };
-
-  for (const char* f : filesToDelete) {
-    if (fileSystem.exists(f)) {
-      DPRINTF(1, "[FactoryReset] Removing %s", f);
-      fileSystem.remove(f);
-    } else {
-      DPRINTF(0, "[FactoryReset] File not found: %s", f);
-    }
+  if (format) {
+    DPRINTF(1, " Formatting filesystem (LittleFS)...");
+    fileSystem.format();
   }
 
   const char* filesToCreate[] = {
@@ -54,12 +51,12 @@ void factoryReset(bool format, fs::LittleFSFS& fileSystem) {
   };
 
   for (const char* f : filesToCreate) {
-    DPRINTF(1, "[FactoryReset] Creating %s", f);
+    DPRINTF(1, " Creating %s", f);
     File file = fileSystem.open(f, FILE_WRITE);
     if (file) {
       file.close();
     } else {
-      DPRINTF(0, "[FactoryReset] Failed to create file: %s", f);
+      DPRINTF(0, " Failed to create file: %s", f);
     }
   }
   DPRINTF(0, "Rebooting...")
