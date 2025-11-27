@@ -45,18 +45,17 @@ void factoryReset(bool format = false, fs::LittleFSFS& fileSystem = LittleFS, st
  */
 bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem = LittleFS, const char* filename = "/.factory_reset_marker");  // TODO: Add SPIFFS variant
 
-/*
- * @brief Checks whether a reset button is being held longer than FACTORY_RESET_TIME and performs a factory reset if so.
+/**
+ * @brief Returns true if reset button is being held longer than FACTORY_RESET_TIME
  *
  * @param gpioPin    GPIO pin connected to the reset button. Must use INPUT_PULLUP mode.
  * @param ledPin     GPIO pin for LED feedback. Use 255 to disable LED blinking.
- * @param format     If true, formats the entire filesystem. If false (default), only selected files are deleted.
- * @param fileSystem File system to act upon
  *
  * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), a factory reset is triggered.
  * The LED (if enabled) will blink 20 times before the reset.
- * The reset behavior is controlled by the format parameter.
+ *
+ * @return true if the button is held longer than FACTORY_RESET_TIME (default 5000 ms)
  */
-void checkResetButtonOnStartup(uint8_t gpioPin, uint8_t ledPin, bool format = false, fs::LittleFSFS& fileSystem = LittleFS);  // TODO: Add SPIFFS variant
+bool factoryResetRequest(uint8_t gpioPin, uint8_t ledPin);
 
 #endif  // ESP_RESET_UTIL_H

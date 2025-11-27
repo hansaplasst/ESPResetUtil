@@ -29,7 +29,9 @@ void setup() {
   }
 
   DPRINTF(1, "Checking reset button.")
-  checkResetButtonOnStartup(RESET_PIN, LEDPIN, true);
+  if (factoryResetRequest(RESET_PIN, LEDPIN)) {
+    factoryReset(true);
+  }
   DPRINTF(1, " Done...")
 
   DPRINTF(1, "[Setup] Initialization would go here...");

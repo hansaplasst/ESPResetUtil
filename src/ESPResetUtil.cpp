@@ -99,8 +99,8 @@ bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const char* filename) {
  * The LED (if enabled) will blink 20 times before the reset.
  * The reset behavior is controlled by the format parameter.
  */
-void checkResetButtonOnStartup(uint8_t gpioPin, uint8_t ledPin, bool format, fs::LittleFSFS& fileSystem) {
-  DPRINTF(0, "[checkResetButtonOnStartup]");
+bool factoryResetRequest(uint8_t gpioPin, uint8_t ledPin) {
+  DPRINTF(0, "[factoryResetRequest]");
   pinMode(gpioPin, INPUT_PULLUP);
   unsigned long startTime = millis();
 
@@ -111,8 +111,10 @@ void checkResetButtonOnStartup(uint8_t gpioPin, uint8_t ledPin, bool format, fs:
       if (ledPin != 255) {
         blinkLedOnPin(ledPin, 20, 100);
       }
-      factoryReset(format, fileSystem);
+      // factoryReset(format, fileSystem);
+      return true;
     }
     delay(10);
   }
+  return false;
 }
