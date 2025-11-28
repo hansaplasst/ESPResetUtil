@@ -18,6 +18,8 @@
   #define FACTORY_RESET_TIME 5000  // 5 seconds button press = factory reset
 #endif
 
+namespace espResetUtil {
+
 /**
  * @brief Performs a clean ESP restart and provides visual feedback.
  *
@@ -57,5 +59,7 @@ bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem = LittleFS, const char* 
  * @return true if the button is held longer than FACTORY_RESET_TIME (default 5000 ms)
  */
 bool factoryResetRequest(uint8_t gpioPin, uint8_t ledPin);
+
+}  // namespace espResetUtil
 
 #endif  // ESP_RESET_UTIL_H

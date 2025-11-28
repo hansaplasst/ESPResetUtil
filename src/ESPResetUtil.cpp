@@ -6,7 +6,7 @@
  * This is a soft reset for ESP32 (`ESP.restart()`) or a hard reset for ESP8266 (`ESP.reset()`).
  * Before resetting, the a LED (default LedPin 2) blinks 4 times for visual confirmation.
  */
-void espReset(uint8_t LedPin) {
+void espResetUtil::espReset(uint8_t LedPin) {
   DPRINTF(2, "[ESPReset] Restarting ESP...");
   blinkLedOnPin(LedPin, 4, 100);
 #ifdef ARDUINO_ARCH_ESP8266
@@ -24,7 +24,7 @@ void espReset(uint8_t LedPin) {
  *
  * After performing the reset actions, the device restarts.
  */
-void factoryReset(bool format, fs::LittleFSFS& fileSystem, std::initializer_list<const char*> filesToDelete) {
+void espResetUtil::factoryReset(bool format, fs::LittleFSFS& fileSystem, std::initializer_list<const char*> filesToDelete) {
   DPRINTF(0, "[factoryReset]");
 
   // 1. Delete files
@@ -41,7 +41,7 @@ void factoryReset(bool format, fs::LittleFSFS& fileSystem, std::initializer_list
   }
 
   if (format) {
-    DPRINTF(1, " Formatting filesystem (LittleFS)...");
+    DPRINTF(1, " Formatting filesystem...");
     fileSystem.format();
   }
 
@@ -76,7 +76,7 @@ void factoryReset(bool format, fs::LittleFSFS& fileSystem, std::initializer_list
  *
  * If the marker file is found, it is deleted to prevent repeated resets on subsequent boots.
  */
-bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const char* filename) {
+bool espResetUtil::checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const char* filename) {
   DPRINTF(0, "[checkFactoryResetMarker] Checking for factory reset marker file...");
   if (fileSystem.exists(filename)) {
     if (fileSystem.remove(filename))
@@ -98,7 +98,7 @@ bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const char* filename) {
  *
  * @return true if the button is held longer than FACTORY_RESET_TIME (default 5000 ms)
  */
-bool factoryResetRequest(uint8_t gpioPin, uint8_t ledPin) {
+bool espResetUtil::factoryResetRequest(uint8_t gpioPin, uint8_t ledPin) {
   DPRINTF(0, "[factoryResetRequest]");
   pinMode(gpioPin, INPUT_PULLUP);
   unsigned long startTime = millis();

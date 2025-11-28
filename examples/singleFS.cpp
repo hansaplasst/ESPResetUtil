@@ -21,16 +21,16 @@ void setup() {
   // First file system (default)
   if (!LittleFS.begin(false)) {
     DPRINTF(3, "[LittleFS] Initialization failed! Formatting...");
-    factoryReset(true);  // after formatting a marker file exists on the partition
+    espResetUtil::factoryReset(true);  // after formatting a marker file exists on the partition
   }
 
-  if (checkFactoryResetMarker()) {
+  if (espResetUtil::checkFactoryResetMarker()) {
     DPRINTF(1, "[Setup] Factory reset marker was found...");
   }
 
   DPRINTF(1, "Checking reset button.")
-  if (factoryResetRequest(RESET_PIN, LEDPIN)) {
-    factoryReset(true);
+  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN)) {
+    espResetUtil::factoryReset(true);
   }
   DPRINTF(1, " Done...")
 
@@ -41,7 +41,7 @@ void setup() {
 void loop() {
   if (digitalRead(RESET_PIN) == LOW) {
     DPRINTF(2, "[Loop] Reset button pressed during runtime");
-    espReset(LEDPIN);
+    espResetUtil::espReset(LEDPIN);
   }
 
   delay(10);

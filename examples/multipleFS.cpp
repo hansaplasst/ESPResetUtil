@@ -37,33 +37,33 @@ void setup() {
 
   // First file system (default)
   if (!LittleFS.begin(false)) {
-    DPRINTF(3, "[LittleFS] Initialization failed! Formatting...");
-    factoryReset(true);  // after formatting a marker file exists on the partition
+    DPRINTF(3, "/littlefs Initialization failed! Formatting...");
+    espResetUtil::factoryReset(true);  // after formatting a marker file exists on the partition
   }
 
-  if (checkFactoryResetMarker()) {
+  if (espResetUtil::checkFactoryResetMarker()) {
     DPRINTF(1, "[Setup] Factory reset marker was found...");
   }
 
   DPRINTF(1, "Checking reset button.")
-  if (factoryResetRequest(RESET_PIN, LEDPIN)) {
-    factoryReset(true);
+  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN)) {
+    espResetUtil::factoryReset(true);
   }
   DPRINTF(1, " Done... Setup Continued.");
 
   // Second file system
   DPRINTF(1, "Checking second file system..")
-  if (!fs2.begin(true, "/fsDev", 10, "fsDev")) {  // See: partitions.csv
-    DPRINTF(3, "[LittleFS] Initialization failed! Formatting...");
-    factoryReset(true, fs2);  // After formatting fs2 a marker file exists on the fs2 partition
+  if (!fs2.begin(true, "/devffs", 10, "devffs")) {  // See: partitions.csv
+    DPRINTF(3, "/devffs Initialization failed! Formatting...");
+    espResetUtil::factoryReset(true, fs2);  // After formatting fs2 a marker file exists on the fs2 partition
   }
-  if (checkFactoryResetMarker(fs2)) {
+  if (espResetUtil::checkFactoryResetMarker(fs2)) {
     DPRINTF(1, "[Setup] Factory reset marker found on second file system...");
   }
   DPRINTF(1, "Press button 8s to factory reset the second partition.")
   delay(3000);
-  if (factoryResetRequest(RESET_PIN, LEDPIN)) {
-    factoryReset(true, fs2);
+  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN)) {
+    espResetUtil::factoryReset(true, fs2);
   }
   DPRINTF(1, " Done... Setup Continued.");
 
@@ -76,7 +76,7 @@ void setup() {
 void loop() {
   if (digitalRead(RESET_PIN) == LOW) {
     DPRINTF(2, "[Loop] Reset button pressed during runtime");
-    espReset(LEDPIN);
+    espResetUtil::espReset(LEDPIN);
   }
 
   delay(10);
