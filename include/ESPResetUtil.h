@@ -36,7 +36,8 @@ void espReset(uint8_t LedPin = 2);
  *
  * After performing the reset actions, the device restarts.
  */
-void factoryReset(bool format = false, fs::LittleFSFS& fileSystem = LittleFS, std::initializer_list<const char*> filesToDelete = {});  // TODO: Add SPIFFS variant
+void factoryReset(bool format = false, fs::LittleFSFS& fileSystem = LittleFS,
+                  std::initializer_list<const char*> filesToDelete = {});  // TODO: Add SPIFFS variant
 
 /**
  * @brief Checks if the factory reset marker file exists.
@@ -45,7 +46,8 @@ void factoryReset(bool format = false, fs::LittleFSFS& fileSystem = LittleFS, st
  *
  * If the marker file is found, it is deleted to prevent repeated resets on subsequent boots.
  */
-bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem = LittleFS, const char* filename = "/.factory_reset_marker");  // TODO: Add SPIFFS variant
+bool checkFactoryResetMarker(fs::LittleFSFS& fileSystem = LittleFS,
+                             const char* filename = "/.factory_reset_marker");  // TODO: Add SPIFFS variant
 
 /**
  * @brief Returns true if reset button is being held longer than FACTORY_RESET_TIME
