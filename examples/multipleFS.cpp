@@ -80,6 +80,7 @@ void setup() {
   DPRINTF(1, "Press button 5s to factory reset the first (standard) partition.")
   printPartitions();
 
+  // Create a task to monitor the reset pin during normal operation
   BaseType_t res = xTaskCreatePinnedToCore(
       ResetPinMonitorTask,
       "ResetPinMonitorTask",
