@@ -1,14 +1,8 @@
 #include "ESPResetUtil.h"
 
-/**
- * @brief Performs a clean ESP restart and provides visual feedback.
- *
- * This is a soft reset for ESP32 (`ESP.restart()`) or a hard reset for ESP8266 (`ESP.reset()`).
- * Before resetting, the a LED (default LedPin 2) blinks 4 times for visual confirmation.
- */
-void espResetUtil::espReset(uint8_t LedPin) {
+void espResetUtil::espReset(uint8_t LedPin, bool rgb, uint8_t brightness) {
   DPRINTF(2, "[ESPReset] Restarting ESP...");
-  blinkLedOnPin(LedPin, 4, 100);
+  blinkLedOnPin(LedPin, 4, 100, rgb, brightness);
 #ifdef ARDUINO_ARCH_ESP8266
   ESP.reset();
 #else
@@ -16,14 +10,6 @@ void espResetUtil::espReset(uint8_t LedPin) {
 #endif
 }
 
-/**
- * @brief Performs a factory reset by either formatting the filesystem or deleting specific files.
- *
- * @param format If true, formats the entire filesystem. If false, deletes selected configuration files.
- * @file /.factory_reset_marker is created to indicate a factory reset has occurred.
- *
- * After performing the reset actions, the device restarts.
- */
 void espResetUtil::factoryReset(bool format, fs::LittleFSFS& fileSystem, std::initializer_list<const char*> filesToDelete) {
   DPRINTF(0, "[factoryReset]");
 
@@ -69,13 +55,6 @@ void espResetUtil::factoryReset(bool format, fs::LittleFSFS& fileSystem, std::in
 #endif
 }
 
-/**
- * @brief Checks if the factory reset marker file exists.
- *
- * @return true if the marker file exists (indicating a factory reset has occurred), false otherwise.
- *
- * If the marker file is found, it is deleted to prevent repeated resets on subsequent boots.
- */
 bool espResetUtil::checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const char* filename) {
   DPRINTF(0, "[checkFactoryResetMarker] Checking for factory reset marker file...");
   if (fileSystem.exists(filename)) {
@@ -87,18 +66,7 @@ bool espResetUtil::checkFactoryResetMarker(fs::LittleFSFS& fileSystem, const cha
   return false;
 }
 
-/**
- * @brief Returns true if reset button is being held longer than FACTORY_RESET_TIME
- *
- * @param gpioPin    GPIO pin connected to the reset button. Must use INPUT_PULLUP mode.
- * @param ledPin     GPIO pin for LED feedback. Use 255 to disable LED blinking.
- *
- * When the button is held longer than FACTORY_RESET_TIME (default 5000 ms), the LED
- * (if enabled) will blink 20 times before the reset.
- *
- * @return true if the button is held longer than FACTORY_RESET_TIME (default 5000 ms)
- */
-bool espResetUtil::factoryResetRequest(uint8_t gpioPin, uint8_t ledPin) {
+bool espResetUtil::factoryResetRequest(uint8_t gpioPin, uint8_t ledPin, bool rgb, uint8_t brightness) {
   DPRINTF(0, "[factoryResetRequest]");
   pinMode(gpioPin, INPUT_PULLUP);
   unsigned long startTime = millis();
@@ -108,7 +76,7 @@ bool espResetUtil::factoryResetRequest(uint8_t gpioPin, uint8_t ledPin) {
     if (millis() - startTime > FACTORY_RESET_TIME) {
       DPRINTF(2, "[Startup] Button held >5s -> Factory reset triggered.");
       if (ledPin != 255) {
-        blinkLedOnPin(ledPin, 20, 100);
+        blinkLedOnPin(ledPin, 20, 100, rgb, brightness);
       }
       // factoryReset(format, fileSystem);
       return true;

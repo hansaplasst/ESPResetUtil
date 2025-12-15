@@ -13,8 +13,12 @@
  *
  * @param count     Number of times to blink (default = 1)
  * @param msDelay   Duration of a full blink in milliseconds (default = 1000)
+ * @param rgb       Set to true if using an RGB LED (e.g., NeoPixel) (default = false) (colour is blue)
+ * @param brightness Brightness level for RGB LED (0-255) (default = 128)
+ *
+ * TODO: Support for multicolour. Currently only blinks blue for RGB LEDs.
  */
-void blinkLed(int16_t count = 1, int16_t msDelay = 1000);
+void blinkLed(int16_t count = 1, int16_t msDelay = 1000, bool rgb = false, uint8_t brightness = 128);
 
 /**
  * @brief Blink a custom LED on a specified GPIO pin.
@@ -31,8 +35,8 @@ void blinkLedOnPin(uint8_t pin, int16_t count = 1, int16_t msDelay = 1000, bool 
 
 // --- Implementations ---
 
-inline void blinkLed(int16_t count, int16_t msDelay) {
-  blinkLedOnPin(LEDPIN, count, msDelay);
+inline void blinkLed(int16_t count, int16_t msDelay, bool rgb, uint8_t brightness) {
+  blinkLedOnPin(LEDPIN, count, msDelay, rgb, brightness);
 }
 
 inline void blinkLedOnPin(uint8_t pin, int16_t count, int16_t msDelay, bool rgb, uint8_t brightness) {

@@ -8,11 +8,20 @@
 #ifndef RESET_PIN
   #define RESET_PIN 4
 #endif
-#ifndef LEDPIN
-  #define LEDPIN 2
-#endif
 
 fs::LittleFSFS fs2;
+
+static void ResetPinMonitorTask(void* arg) {
+  pinMode(LEDPIN, OUTPUT);
+  for (;;) {
+    if (digitalRead(RESET_PIN) == LOW) {
+      DPRINTF(2, "[Loop] Reset button pressed during runtime");
+      espResetUtil::espReset(LEDPIN, true, 128);
+    }
+
+    delay(10);
+  }
+}
 
 void printPartitions() {
   const esp_partition_t* it = nullptr;
@@ -46,7 +55,7 @@ void setup() {
   }
 
   DPRINTF(1, "Checking reset button.")
-  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN)) {
+  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN, true)) {
     espResetUtil::factoryReset(true);
   }
   DPRINTF(1, " Done... Setup Continued.");
@@ -62,22 +71,32 @@ void setup() {
   }
   DPRINTF(1, "Press button 8s to factory reset the second partition.")
   delay(3000);
-  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN)) {
+  if (espResetUtil::factoryResetRequest(RESET_PIN, LEDPIN, true)) {
     espResetUtil::factoryReset(true, fs2);
   }
   DPRINTF(1, " Done... Setup Continued.");
 
   DPRINTF(1, "[Setup] Initialization would go here...");
-  blinkLed(2, 1000);  // Indicate setup completion
   DPRINTF(1, "Press button 5s to factory reset the first (standard) partition.")
   printPartitions();
+
+  BaseType_t res = xTaskCreatePinnedToCore(
+      ResetPinMonitorTask,
+      "ResetPinMonitorTask",
+      2048,
+      nullptr,
+      1,
+      nullptr,
+      APP_CPU_NUM  // Run on APP CPU
+  );
+
+  blinkLed(2, 1000, true);  // Indicate setup completion
 }
 
 void loop() {
-  if (digitalRead(RESET_PIN) == LOW) {
-    DPRINTF(2, "[Loop] Reset button pressed during runtime");
-    espResetUtil::espReset(LEDPIN);
+  DPRINTF(1, "Main loop running and holding APP CPU core busy for 10 seconds...");
+  for (uint8_t i = 10; i > 0; i--) {
+    DPRINTF(1, "%d", i);
+    delay(1000);
   }
-
-  delay(10);
 }
