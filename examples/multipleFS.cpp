@@ -18,7 +18,6 @@ static void ResetPinMonitorTask(void* arg) {
       DPRINTF(2, "[Loop] Reset button pressed during runtime");
       espResetUtil::espReset(LEDPIN, true, 128);
     }
-
     delay(10);
   }
 }
@@ -82,13 +81,13 @@ void setup() {
 
   // Create a task to monitor the reset pin during normal operation
   BaseType_t res = xTaskCreatePinnedToCore(
-      ResetPinMonitorTask,
-      "ResetPinMonitorTask",
-      2048,
-      nullptr,
-      1,
-      nullptr,
-      APP_CPU_NUM  // Run on APP CPU
+      ResetPinMonitorTask,    // task function
+      "ResetPinMonitorTask",  // task name
+      2048,                   // stack size
+      nullptr,                // parameters
+      1,                      // priority
+      nullptr,                // task handle
+      APP_CPU_NUM             // Run on APP CPU
   );
 
   blinkLed(2, 1000, true);  // Indicate setup completion

@@ -41,13 +41,14 @@ inline void blinkLed(int16_t count, int16_t msDelay, bool rgb, uint8_t brightnes
 
 inline void blinkLedOnPin(uint8_t pin, int16_t count, int16_t msDelay, bool rgb, uint8_t brightness) {
   pinMode(pin, OUTPUT);
+  static Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, pin, NEO_GRB + NEO_KHZ800);
+  strip.begin();
+
   if (msDelay < 100) msDelay = 100;
 
   for (int i = 0; i < count; i++) {
     if (rgb) {
       // For RGB LEDs (e.g., NeoPixel), turn on white color
-      Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, pin, NEO_GRB + NEO_KHZ800);
-      strip.begin();
       strip.setPixelColor(0, strip.Color(0, 0, brightness));  // Blue color
       strip.show();
       delay(msDelay / 2);
